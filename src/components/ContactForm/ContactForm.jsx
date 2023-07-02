@@ -1,75 +1,56 @@
-import { nanoid } from "nanoid";
-import { useState } from "react";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/contactsSlice';
+import { getContacts } from 'redux/selector';
+import { nanoid } from 'nanoid';
+import { toast } from 'react-toastify';
 import { PhoneForm, PhoneLabel, Input, Btn } from './ContactForm.styled';
 
 
-const ContactForm =({ contacts, onSubmit }) => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-  
-  const handleChange = e => {
-    const { name, value } = e.currentTarget;
-    if(name === 'name') {
-      setName(value);
-    } else if (name === 'number') {
-      setNumber(value);
-    }
-  }
-
+export const ContactForm = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
   const handleSubmit = e => {
     e.preventDefault();
-    const isDuplicateName = contacts.some(contact => contact.name === name);
-  
-    if (isDuplicateName) {
-        alert(`${name} is already in contacts.`);
-      return;
-    }
-  
-    const id = nanoid();
-    const newContact = { id, name, number };
-  
-    onSubmit(newContact);
-    setName('');
-    setNumber('');
-  };
 
+    const contact = {
+      id: nanoid(),
+      name: e.currentTarget.elements.name.value,
+      number: e.currentTarget.elements.number.value,
+    };
+
+    const isExist = contacts.find(
+      ({ name }) => name.toLowerCase() === contact.name.toLowerCase()
+    );
+
+    if (isExist) {
+      return toast.warn(`${contact.name} is already in contacts.`);
+    };
+
+    dispatch(addContact(contact));
+    e.currentTarget.reset();
+  };
+  
   return (
     <PhoneForm onSubmit={handleSubmit}>
-      <PhoneLabel>
+      <PhoneLabel htmlFor={nanoid()}>
         Name
         <Input
           type="text"
           name="name"
-          value={name}
           required
-          onChange={handleChange}
+          id={nanoid()}
         />
       </PhoneLabel>
-      <PhoneLabel>
+      <PhoneLabel htmlFor={nanoid()}>
         Number
         <Input
           type="tel"
           name="number"
-          value={number}
+          id={nanoid()}
           required
-          onChange={handleChange}
         />
       </PhoneLabel>
       <Btn type="submit">Add contact</Btn>
     </PhoneForm>
   );
-}
-
-ContactForm.propTypes = {
-    contacts: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        number: PropTypes.string.isRequired,
-      })
-    ).isRequired,
-    onSubmit: PropTypes.func.isRequired,
-  };
-
-export default ContactForm;
+};

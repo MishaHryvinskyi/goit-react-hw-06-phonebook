@@ -16,4 +16,9 @@ code {
 
 ul, ol {
   list-style: none;
+  margin: 0px;
 }
+
+p {
+  margin: 0px;
+} 

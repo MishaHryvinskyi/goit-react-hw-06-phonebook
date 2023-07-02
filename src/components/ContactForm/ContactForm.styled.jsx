@@ -15,7 +15,8 @@ export const PhoneLabel = styled.label`
 `;
 
 export const Input = styled.input`
-margin-top: 10px;
+    cursor: pointer;
+    margin-top: 10px;
     width: 300px;
     height: 25px;
     border-radius: 10px;
@@ -34,6 +35,7 @@ export const Btn = styled.button`
     padding: 10px 20px;
     border-radius: 10px;
     border: solid 2px #647065;
+    cursor: pointer;
     &:hover {
         background-color: #f4fca2;
         color: black;

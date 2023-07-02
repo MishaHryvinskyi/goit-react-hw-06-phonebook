@@ -11,7 +11,6 @@ export const List = styled.ul`
 `;
 
 export const ListItem = styled.li`
-    
     font-size: 18px;
     &:not(:last-child) {
         margin-bottom: 12px;
@@ -19,6 +18,7 @@ export const ListItem = styled.li`
 `;
 
 export const BtnDelite = styled.button`
+    cursor: pointer;
     margin-left: 15px;
     padding: 5px 8px;
     background-color: #fc6063;
@@ -29,4 +29,10 @@ export const BtnDelite = styled.button`
         background-color: #d68bb3;
         color: black;
     }
+`;
+
+export const Contact = styled.p`
+    display: inline-block;
+    min-width: 230px;
+    text-align: center;
 `;
